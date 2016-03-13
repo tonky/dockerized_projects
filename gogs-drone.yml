@@ -1,0 +1,31 @@
+version: '2'
+
+services:
+  gogs:
+    image: gogs/gogs
+    ports:
+     - "10022:22"
+     - "9000:3000"
+    volumes:
+        - gogs-data:/data
+
+  drone:
+    depends_on:
+     - gogs
+    image: drone/drone
+    ports:
+        - "9001:8000"
+    volumes:
+        - drone-data:/var/lib/drone
+        - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+        REMOTE_DRIVER: gogs
+        REMOTE_CONFIG: http://192.168.99.100:9000
+        DEBUG: "True"
+
+volumes:
+    gogs-data:
+        external: false
+    drone-data:
+        external: false
+
