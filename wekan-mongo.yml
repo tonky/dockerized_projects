@@ -1,22 +1,22 @@
 version: '2'
 
 services:
-    wekan:
+    web:
         image: mquandalle/wekan
         links:
-            - wekandb:db
+            - db:db
         ports:
             - 8081:80
         environment:
             MONGO_URL: mongodb://db
             ROOT_URL: http://192.168.99.100:8081
 
-    wekandb:
+    db:
         image: mongo
         volumes:
-            - wekan-data:/data/db
+            - data:/data/db
 
 volumes:
-    wekan-data:
+    data:
         external: false
 
